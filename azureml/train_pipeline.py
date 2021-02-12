@@ -131,7 +131,7 @@ trainingScript = PythonScriptStep(
     inputs=[dataset_ref],
     outputs=[model_output],
     compute_target=aml_compute, 
-    source_directory=".",
+    source_directory="./azureml",
     runconfig=run_config
 )
 print("trainingStep created")
@@ -145,7 +145,7 @@ registerModelStep = PythonScriptStep(
     inputs=[dataset_ref,model_output],
     #outputs=[model_output],
     compute_target=aml_compute, 
-    source_directory=".",
+    source_directory="./azureml",
     runconfig=run_config
 )
 print("registerModelStep created")
