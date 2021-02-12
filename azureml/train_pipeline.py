@@ -15,6 +15,7 @@ from azureml.core.datastore import Datastore
 from azureml.core.runconfig import CondaDependencies, RunConfiguration
 from azureml.data.data_reference import DataReference
 from azureml.pipeline.core import Pipeline, PipelineData, PortDataReference
+from azureml.pipeline.core.schedule import ScheduleRecurrence, Schedule
 from azureml.pipeline.steps import PythonScriptStep, DatabricksStep
 from azureml.core.model import Model
 
@@ -166,22 +167,27 @@ exp.set_tags({'automl':'no','working':'no'})
 pipeline_run1 = exp.submit(iris_train_pipeline)
 print("Pipeline is submitted for execution")
 
+pipeline_run1.wait_for_completion()
 
 # %%
-published_pipeline = iris_train_pipeline.publish(name="iris_training_demo", description="Iris Classification Demo", continue_on_step_failure=True)
-published_pipeline
+# TODO: retrieve results to determine if new pipeline should be published (old pipeline should also be disabled)
+publish = False
+if publish:
+    published_pipeline = iris_train_pipeline.publish(name="iris_training_demo", description="Iris Classification Demo", continue_on_step_failure=True)
+    published_pipeline
 
 
 # %%
-from azureml.pipeline.core.schedule import ScheduleRecurrence, Schedule
+# Pipeline must be published first to be put on a schedule
+schedule = False
+if schedule:
+    recurrence = ScheduleRecurrence(frequency="Day", interval=1, hours=[22], minutes=[30]) # Runs every day at 10:30pm
 
-recurrence = ScheduleRecurrence(frequency="Day", interval=1, hours=[22], minutes=[30]) # Runs every day at 10:30pm
-
-schedule = Schedule.create(workspace=ws, name="iris_training_demo_schedule",
-                           pipeline_id=published_pipeline.id, 
-                           experiment_name='iris_training_demo_daily_schedule_run',
-                           recurrence=recurrence,
-                           wait_for_provisioning=True,
-                           description="iris training demo daily Schedule Run")
+    schedule = Schedule.create(workspace=ws, name="iris_training_demo_schedule",
+                            pipeline_id=published_pipeline.id, 
+                            experiment_name='iris_training_demo_daily_schedule_run',
+                            recurrence=recurrence,
+                            wait_for_provisioning=True,
+                            description="iris training demo daily Schedule Run")
 
 
