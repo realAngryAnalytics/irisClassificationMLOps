@@ -62,6 +62,7 @@ try:
 except:
     acc_to_beat = 0
 
+acc_to_beat = 0
 print("accuracy to beat",acc_to_beat)
 if model_accuracy > acc_to_beat:
     print("model is better, registering")
