@@ -5,12 +5,12 @@ Currently this repository features a multi-step training pipeline that registers
 
 ![AzureML Pipeline](/docs/images/pipeline_image.PNG)
 
-review .gitignore to see that config.json is not included and should be created locally with the following format
-{
-    "subscription_id": "***",
-    "resource_group": "***",
-    "workspace_name": "***"
-}
+review .gitignore to see that config.json is not included and should be created locally with the following format<br/>
+{  
+    "subscription_id": "***",  
+    "resource_group": "***",  
+    "workspace_name": "***"  
+}<br/>
 
 Files to review<br/>
 * [iris_supervised_model.py](iris_supervised_model.py) is the original training file (see footnote below) that would be typical for a local training script.<br/>
