@@ -1,4 +1,4 @@
-## Passing files and datasets between steps
+## Passing datasets and files between steps
 Other than a few blogs I have found on the internet, instructions on how to properly pass files or datasets between steps are hard to find. 
 
 ![AzureML Pipeline](/docs/images/pipeline_image.PNG)
@@ -56,7 +56,7 @@ You should be able to treat these environment variables as a file location just 
 df = pd.read_csv(os.environ['AZUREML_DATAREFERENCE_irisdata'], names=column_headers)
 ```
 
-For the model_output we pickel the model file and save it to the mounted_output_path.
+For the model_output we pickle the model file and save it to the mounted_output_path.
 ```
 pkl_filename = "model.pkl"
 mounted_output_path = os.environ['AZUREML_DATAREFERENCE_model_output']
