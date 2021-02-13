@@ -41,7 +41,7 @@ if (training_run_id == None):
 dataset = os.environ['AZUREML_DATAREFERENCE_irisdata']
 #model appears to be a mount path
 model_output = os.environ['AZUREML_DATAREFERENCE_model_output']
-print("model to upload",model_output)
+print("model path",model_output)
 print("files in model path",os.listdir(path=model_output))
 #the as the model is registered via the run below, upload the model file to the run
 
