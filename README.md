@@ -5,12 +5,12 @@ Currently this repository features a multi-step training pipeline that registers
 
 ![AzureML Pipeline](/docs/images/pipeline_image.PNG)
 
-review .gitignore to see that config.json is not included and should be created locally with the following format
-{
-    "subscription_id": "***",
-    "resource_group": "***",
-    "workspace_name": "***"
-}
+review .gitignore to see that config.json is not included and should be created locally with the following format<br/>
+{  
+    "subscription_id": "***",  
+    "resource_group": "***",  
+    "workspace_name": "***"  
+}<br/>
 
 Files to review<br/>
 * [iris_supervised_model.py](iris_supervised_model.py) is the original training file (see footnote below) that would be typical for a local training script.<br/>
@@ -19,6 +19,8 @@ Files to review<br/>
 * [azureml/train_pipeline.py](azureml/train_pipeline.py) is the non-interactive "driver" script that is used in the GitHub Action to build and run the training pipeline. This script utilizes a services principal to connect to the AzureML workspace as it is non-interactive. Complete steps of service principal authentication setup can be found [here](https://github.com/Azure/MachineLearningNotebooks/blob/master/how-to-use-azureml/manage-azureml-service/authentication-in-azureml/authentication-in-azureml.ipynb)<br/>
 * [.github/workflows/iristrain.yaml](.github/workflows/iristrain.yaml) is the GitHub Action file that is executed each time a code checkin occurs to run train_pipeline.py. It leverages GitHub Secrets to pass as environment variables to the python script.<br/>
 
+#### Deeper Dives
+* [Passing datasets and files between steps](/docs/passing_files_between_steps.md)
 
 AzureML MLOps<br/>
 https://github.com/microsoft/MLOpsPython

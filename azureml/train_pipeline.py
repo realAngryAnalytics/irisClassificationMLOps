@@ -128,7 +128,6 @@ run_config.environment.python.conda_dependencies = CondaDependencies.create(
 # run the transformation script to produce the intermediate data that will go to the inferencing step
 trainingScript = PythonScriptStep(
     script_name="iris_supervised_model.py", 
-    #arguments=["--input_data_1", nevada_booking_all_time]
     inputs=[dataset_ref],
     outputs=[model_output],
     compute_target=aml_compute, 
