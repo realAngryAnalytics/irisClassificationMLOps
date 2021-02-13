@@ -25,3 +25,26 @@ print("PipelineData object created for models")
 ```
 
 In the PythonScriptStep, utilize the input and output parameters.
+```
+from azureml.pipeline.steps import PythonScriptStep
+trainingScript = PythonScriptStep(
+    script_name="iris_supervised_model.py", 
+    inputs=[dataset_ref],
+    outputs=[model_output],
+    compute_target=aml_compute, 
+    source_directory="./azureml",
+    runconfig=run_config
+)
+```
+Simply pass the "model_output" from outputs as input to the next step and so on.
+
+#### Using these references in the script
+When you submit a pipeline job to run, a container is created and all the files in the source_directory location are imported into the container. The input and outputs effectively become mount points for blob storage. This mount point is accessible via an environment variable that looks like the below.
+'os.environ['AZUREML_DATAREFERENCE_irisdata']'
+
+This is also the same environment variable format used for the output location (what was the PipelineData object) which appears to be a randomly created storage location given to you from AzureML.
+'mounted_output_path = os.environ['AZUREML_DATAREFERENCE_model_output']'
+Looking at the mounted_output_path variable above gives a location like: mnt/batch/tasks/shared/LS_root/jobs/amlworkspacesjh/azureml/715a1dca-fafc-4899-ae78-ffffffffffff/mounts/workspaceblobstore/azureml/71ab64d9-bc4c-4b74-a5a5-ffffffffffff/model_output
+
+You should be able to treat this environment variable as a file location just like a local path. So for the irisdata which was a csv file in the data reference you can read it like normal.
+'df = pd.read_csv(os.environ['AZUREML_DATAREFERENCE_irisdata'], names=column_headers)'
