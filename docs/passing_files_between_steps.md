@@ -1,7 +1,7 @@
 ## Passing Files and Datasets between steps
 Other than a few blogs I have found on the internet, instructions on how to properly pass files or datasets between steps are hard to find. 
 
-![AzureML Pipeline](/images/pipeline_image.PNG)
+![AzureML Pipeline](/docs/images/pipeline_image.PNG)
 
 In the above image you can see that irisdata is passed into iris_supervised_model.py and then model_output is the output. When you define the pipeline in the driver script, the input data is a DataReference object and any data passed between steps is a PipelineData object.
 
