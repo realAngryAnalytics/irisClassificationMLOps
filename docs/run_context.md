@@ -41,7 +41,7 @@ See this [sample notebook](https://github.com/Azure/MachineLearningNotebooks/blo
 ### Managing the pipeline execution
 In a pipeline, each run is at the step level, or a child of a parent run which is the pipeline itself. 
 
-![Pipeline Parent Child](/docs/images/pipeline_parent_child_image.PNG)
+![Pipeline Parent Child](/docs/images/pipeline_parent_child_image.png)
 
 What we might choose to do is to log important metrics or properties at the pipeline level rather than at the step level. Or we could do both. *run.parent* will give the parent run context. The code below sets the two properties by passing in a dictionary as the parameter and those same values on two tags also.
 
@@ -52,21 +52,13 @@ run.parent.tag("accuracy",best_score)
 ```
 
 Properties are immutable while tags are not, however tags are more prodominent in the Azure ML UI so they are easier to read. 
-![tags](/docs/images/tags_image.png)
+![tags](/docs/images/tags_image.PNG)
 
 To review the added properties you have to click "Raw JSON" under "see all properties".
-![see all properties](/docs/images/see_all_properties.png)
+![see all properties](/docs/images/see_all_properties_image.png)
 
 ![properties](/docs/images/properties_image.png)
 
-Now that the results of our training are published to the parent pipeline tags (and properties), they can be used to control what happens in execution of later steps. In this example, the accuracy score is going to control if this model is will be registered or not. For details, review [Model Registration](/docs/model_registration.md)
-
-
-
-
-
-set immutable properties or tags (not immutable). 
-`run.add_properties({'best_model':best_model[0],'accuracy':best_score})`
-
+Now that the results of our training are published to the parent pipeline tags (and properties), they can be used to control what happens in execution of later steps. In this example, the accuracy score is going to control if this model will be registered or not. For details, review [Model Registration](/docs/model_registration.md)
 
 
