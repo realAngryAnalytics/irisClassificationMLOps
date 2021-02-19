@@ -112,7 +112,7 @@ with open('./outputs/output.txt', 'w') as f:
 
 		if accuracy>best_score:
 			best_score = accuracy
-			best_model = (name, model)
+			best_model = (name, mdl)
 
 		msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
 		f.write(msg)
@@ -128,6 +128,14 @@ pkl_filename = "model.pkl"
 with open(os.path.join('./outputs/', pkl_filename), 'wb') as file:
     pickle.dump(best_model[1], file)
 
+print("retrieving output mount path")
+mounted_output_path = os.environ['AZUREML_DATAREFERENCE_model_output']
+os.makedirs(mounted_output_path, exist_ok=True)
+
+with open(os.path.join(mounted_output_path, pkl_filename), 'wb') as file:
+    pickle.dump(best_model[1], file)
+
+
 # logging the best model information to properties and tags. 
 # Properties are immutable, tags are not. Both can be accessed outside
 # of the run.
@@ -140,11 +148,3 @@ if not(run.id.startswith('OfflineRun')):
 	run.parent.add_properties({'best_model':best_model[0],'accuracy':best_score})
 	run.parent.tag("best_model",best_model[0])
 	run.parent.tag("accuracy",best_score)
-
-print("retrieving output mount path")
-mounted_output_path = os.environ['AZUREML_DATAREFERENCE_model_output']
-os.makedirs(mounted_output_path, exist_ok=True)
-
-with open(os.path.join(mounted_output_path, pkl_filename), 'wb') as file:
-    pickle.dump(best_model[1], file)
-
