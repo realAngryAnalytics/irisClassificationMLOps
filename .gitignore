@@ -2,3 +2,4 @@
 config.json
 *.pkl
 model_output
+output.txt

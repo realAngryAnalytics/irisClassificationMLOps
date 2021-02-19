@@ -14,7 +14,7 @@ run = Run.get_context()
 # else:
 exp = run.experiment
 ws = run.experiment.workspace
-run_id = 'amlcompute'
+parentrun = run.parent
 
 
 
@@ -24,10 +24,10 @@ model_name = sys.argv[2]
 print("model_name",model_name)
 training_step_name = sys.argv[4] 
 print("training_step_name",training_step_name)
-#acc_to_beat = float(sys.argv[4])
+
 
 training_run_id = None
-for step in run.parent.get_children():
+for step in parentrun.get_children():
     print("Outputs of step " + step.name)
     if step.name == training_step_name:
             step.download_file('model_output',output_file_path='.')
@@ -46,6 +46,9 @@ print("files in model path",os.listdir(path=model_output))
 #the as the model is registered via the run below, upload the model file to the run
 
 run.upload_file('model.pkl',model_output+'/model.pkl')
+# will actually register the model to the parent which encapsulates all the steps 
+parentrun.upload_file('model.pkl',model_output+'/model.pkl')
+
 model_path = "model.pkl"
 
 
@@ -66,7 +69,7 @@ acc_to_beat = 0
 print("accuracy to beat",acc_to_beat)
 if model_accuracy > acc_to_beat:
     print("model is better, registering")
-    model = run.register_model(
+    model = parentrun.register_model(
                        model_name=model_name,                # Name of the registered model in your workspace.
                        model_path=model_path,  # Local file to upload and register as a model.
                        model_framework=Model.Framework.SCIKITLEARN,  # Framework used to create the model.
