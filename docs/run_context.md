@@ -1,4 +1,6 @@
-## Leverging Run Context 
+## Using Run Context to manage the pipeline execution
+
+### Leverging Run Context
 
 Azure ML allows you to execute Python script in a container that you can send/run on AML compute clusters instead of your local machine. This could be a data transformation script, a training script, or an inferencing script. The below examples shows how you would do this for a simple training script ran stand alone (in absence of a pipeline) 
 
@@ -36,7 +38,7 @@ and tables
 See this [sample notebook](https://github.com/Azure/MachineLearningNotebooks/blob/master/how-to-use-azureml/track-and-monitor-experiments/logging-api/logging-api.ipynb) for all the things you can do with the logging api.
 
 
-### Using run context to manage the pipeline execution
+### Managing the pipeline execution
 In a pipeline, each run is at the step level, or a child of a parent run which is the pipeline itself. 
 
 ![Pipeline Parent Child](/docs/images/pipeline_parent_child_image.PNG)

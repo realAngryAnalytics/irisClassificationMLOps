@@ -21,8 +21,9 @@ Files to review<br/>
 
 #### Deeper Dives
 * [Passing datasets and files between steps](/docs/passing_files_between_steps.md)
+* [Using Run Context to manage the pipeline execution](/docs/run_context.md)
 
-AzureML MLOps<br/>
+**AzureML MLOps**<br/>
 https://github.com/microsoft/MLOpsPython
 
 this work is based on the original work of [asherif844](https://github.com/asherif844) and is being used to demonstrate github actions for MLOps<br/>
