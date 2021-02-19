@@ -4,9 +4,9 @@ import os
 #import joblib
 import pickle
 
-from azureml.core import Run
+from azureml.core import Workspace, Run
 from sklearn.metrics import (accuracy_score, classification_report,
-                             confusion_matrix)
+                             confusion_matrix, plot_confusion_matrix)
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
@@ -21,9 +21,15 @@ import numpy as np
 import pandas as pd
 import scipy
 import sklearn
+import os
 from sklearn import model_selection
 
+
+
 run = Run.get_context()
+if (run.id.startswith('OfflineRun')):
+	os.environ['AZUREML_DATAREFERENCE_irisdata'] = '.\sample_data.csv'
+	os.environ['AZUREML_DATAREFERENCE_model_output'] = '.\model_output'
 
 print('======================================')
 print('Python:      {}'.format(sys.version))
@@ -84,11 +90,29 @@ with open('./outputs/output.txt', 'w') as f:
 			model, X_train, Y_train, cv=kfold, scoring=scoring)
 		results.append(cv_results)
 		names.append(name)
-		run.log(name+"_accuracy",cv_results.mean())
-		run.log(name+"_std",cv_results.std())
-		if cv_results.mean()>best_score:
-			best_score = cv_results.mean()
-			best_model = (name, model)
+
+		#run prediction to get confusion matrix
+		mdl = model.fit(X_train,Y_train)
+		y_pred = mdl.predict(X_validation)
+
+		conf_mat = confusion_matrix(Y_validation, y_pred)
+		accuracy = accuracy_score(Y_validation, y_pred)
+
+		run.log(name+"_accuracy",accuracy)
+	
+		# confusion matrix log for azureml does not accept ndarray
+		# https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.run.run?view=azure-ml-py#log-confusion-matrix-name--value--description----
+		# https://stackoverflow.com/questions/62343056/how-to-log-a-confusion-matrix-to-azureml-platform-using-python
+		cmtx = {
+			"schema_type": "confusion_matrix",
+			"data": {"class_labels": ["Iris-setosa", "Iris-versicolor","Iris-virginica"],
+					"matrix": [[int(y) for y in x] for x in conf_mat]}
+		}
+		run.log_confusion_matrix('Confusion matrix '+name, cmtx)
+
+		if accuracy>best_score:
+			best_score = accuracy
+			best_model = (name, mdl)
 
 		msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
 		f.write(msg)
@@ -104,8 +128,6 @@ pkl_filename = "model.pkl"
 with open(os.path.join('./outputs/', pkl_filename), 'wb') as file:
     pickle.dump(best_model[1], file)
 
-run.add_properties({'best_model':best_model[0],'accuracy':best_score})
-
 print("retrieving output mount path")
 mounted_output_path = os.environ['AZUREML_DATAREFERENCE_model_output']
 os.makedirs(mounted_output_path, exist_ok=True)
@@ -113,3 +135,16 @@ os.makedirs(mounted_output_path, exist_ok=True)
 with open(os.path.join(mounted_output_path, pkl_filename), 'wb') as file:
     pickle.dump(best_model[1], file)
 
+
+# logging the best model information to properties and tags. 
+# Properties are immutable, tags are not. Both can be accessed outside
+# of the run.
+run.add_properties({'best_model':best_model[0],'accuracy':best_score})
+run.tag("best_model",best_model[0])
+run.tag("accuracy",best_score)
+
+# also add these properties to the parent run (if offline run parent would be null)
+if not(run.id.startswith('OfflineRun')):
+	run.parent.add_properties({'best_model':best_model[0],'accuracy':best_score})
+	run.parent.tag("best_model",best_model[0])
+	run.parent.tag("accuracy",best_score)

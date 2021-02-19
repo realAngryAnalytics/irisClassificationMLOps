@@ -7,9 +7,9 @@ Currently this repository features a multi-step training pipeline that registers
 
 review .gitignore to see that config.json is not included and should be created locally with the following format<br/>
 {  
-    "subscription_id": "***",  
-    "resource_group": "***",  
-    "workspace_name": "***"  
+    "subscription_id": " ",  
+    "resource_group": " ",  
+    "workspace_name": " "  
 }<br/>
 
 Files to review<br/>
@@ -21,8 +21,10 @@ Files to review<br/>
 
 #### Deeper Dives
 * [Passing datasets and files between steps](/docs/passing_files_between_steps.md)
+* [Using Run Context to manage the pipeline execution](/docs/run_context.md)
+* [Model Registration](/docs/model_registration.md)
 
-AzureML MLOps<br/>
+**AzureML MLOps**<br/>
 https://github.com/microsoft/MLOpsPython
 
 this work is based on the original work of [asherif844](https://github.com/asherif844) and is being used to demonstrate github actions for MLOps<br/>
