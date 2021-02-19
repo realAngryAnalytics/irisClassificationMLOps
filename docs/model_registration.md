@@ -1,4 +1,6 @@
 ## Model Registration
+The model artifact should be registered as it allows "one click" deployment for real time inferencing hosted on AKS or ACI. Even if the intention is to use it for batch inferencing with Azure ML pipelines it is a more organized way as shown below to keep full context of how the model was built verse just storing the pickle file off in a cloud storage location.
+
 In context of this example pipeline, training has been completed in [iris_supervised_model.py](/azureml/iris_supervised_model.py). The best model accuracy has been recorded in the tags of the pipeline run. 
 
 As discussed in the [Using Run Context to manage the pipeline execution](/docs/run_context.md) doc, retreive the parent pipeline run context with `parentrun = run.parent` and review the tags that have been set.
@@ -37,7 +39,7 @@ except:
     acc_to_beat = 0
 ```
 
-Compare the new model accuracy with the previous model accuracy to beat and if the model is better, register it. *Note: the model is being registered via `parentrun.register_model` and not `workspace.register_model`. This is important as it nicely ties the registered model and artifact back to all the context of how it was created.
+Compare the new model accuracy with the previous model accuracy to beat and if the model is better, register it. *Note: the model is being registered via `parentrun.register_model` and not `Model.register_model`. This is important as it nicely ties the registered model and artifact back to all the context of how it was created.*
 ```
 if model_accuracy > acc_to_beat:
     print("model is better, registering")
@@ -59,3 +61,17 @@ Set additional properties for accuracy and model_type so that the next time trai
 model.add_properties({"accuracy":model_accuracy,"model_type":model_type})
 model.add_tags({"accuracy":model_accuracy,"model_type":model_type})
 ```
+
+### Access the run logs, outputs, code snapshots from registered model
+In the model registry, when registering from the run itself, it hyperlinks to the run id.
+
+![Model](/docs/images/model_image.png)
+
+This links back to the pipeline run. 
+![Pipeline](/docs/images/pipeline_image.PNG)
+
+Notice that when clicking on the iris_supervised_model.py step, there is access to the outputs/logs, metrics, and even the snapshots of the code used to generate the model artifact that is registered. 
+![Snapshot](/docs/images/snapshot_image.PNG)
+
+#### Conclusion
+Registering the model from the pipeline run gives complete context of how the model was built and registered! Its sets up real time and bach inferencing deployment as next steps.
