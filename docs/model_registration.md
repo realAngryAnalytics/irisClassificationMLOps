@@ -63,14 +63,13 @@ model.add_tags({"accuracy":model_accuracy,"model_type":model_type})
 ```
 
 ### Access the run logs, outputs, code snapshots from registered model
-In the model registry, when registering from the run itself, it hyperlinks to the run id.
-
+In the model registry, when registering from the run itself, it hyperlinks to the run id.<br/>
 ![Model](/docs/images/model_image.png)
 
-This links back to the pipeline run. 
+This links back to the pipeline run.<br/>
 ![Pipeline](/docs/images/pipeline_image.PNG)
 
-Notice that when clicking on the iris_supervised_model.py step, there is access to the outputs/logs, metrics, and even the snapshots of the code used to generate the model artifact that is registered. 
+Notice that when clicking on the iris_supervised_model.py step, there is access to the outputs/logs, metrics, and even the snapshots of the code used to generate the model artifact that is registered. <br/>
 ![Snapshot](/docs/images/snapshot_image.PNG)
 
 #### Conclusion
