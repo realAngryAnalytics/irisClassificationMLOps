@@ -1,4 +1,4 @@
-## How to run training process from GitHub Action
+## How to run the training process from GitHub Action
 To put the "Ops" part in "MLOps" the pipeline execution should be automated whenever possible. The scenario being used in this repository is when code is checked in, the training pipeline is automatically kicked off from a GitHub Action and if the newly trained model has a higher accuracy than the previous model, then it will be registered in the model repository. 
 
 To review, [iris_supervised_model.py](/azureml/iris_supervised_model.py) does the training and [register_model.py](/azureml/register_model.py) obviously registers the model. The pipeline that runs these two steps is built and executed from [train_pipeline.py](/azureml/train_pipeline.py). So it is this train_pipeline.py (also referred to in this repository documentation as the driver script) that needs to be executed from a GitHub action.
@@ -67,7 +67,7 @@ More comprehensive information on Azure ML authentication can be found [here](ht
 ### GitHub Secrets
 The above section highlights the environment variables being used. These variables are initiated from the GitHub repositories action secrets. 
 
-![GitHub Secrets](/docs/images/gitub_secrets_image.PNG)
+![GitHub Secrets](/docs/images/github_secrets_image.PNG)
 
 These secrets are created in the repository from the "Settings" tab. In the "Secrets" section, click the "new repository secret" button to add a secret.
 
