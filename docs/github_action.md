@@ -97,5 +97,19 @@ This will happen from master or a branch. To see the action in action, in iris_s
 
 Do a commit and push *(i'm using VSCode, yes it has incredible Python development support)*
 
+On the Actions tab of the repo, a new action is now visible with a "yellow" icon to indicate "in progress"
+![actions list](/docs/images/all_action_workflows_image.PNG)
+
+Click on the run to see the details
+![in progress action](/docs/images/action_workflow_inprogress_image.PNG)
+
+In the details section click on the *run* itself and the logs can be reviewed in real time. First GitHub is acquiring a container image to install the necessary python configuration to run the [train_pipeline.py](/azureml/train_pipeline.py) script.
+![action detail 1](/docs/images/action_run_detail_1_image.PNG)
+
+Once the image is acquired, it kicks off the Azure ML Pipeline which can be reviewed in Azure ML Studio
+![action pipeline](/docs/images/action_kicks_off_pipeline_image.PNG)
+
+`pipeline_run1.wait_for_completion()` is an important line in train_pipeline.py that keeps the script from completing until the Azure ML pipeline completes. Without this line the action will finish while the pipeline is still running. This may be desired depending on the scenario.
+
 
 
