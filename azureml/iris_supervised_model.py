@@ -85,7 +85,7 @@ os.makedirs('./outputs', exist_ok=True)
 
 with open('./outputs/output.txt', 'w') as f:
 	for name, model in models:
-		kfold = model_selection.KFold(n_splits=5, random_state=None)
+		kfold = model_selection.KFold(n_splits=3, random_state=None)
 		cv_results = model_selection.cross_val_score(
 			model, X_train, Y_train, cv=kfold, scoring=scoring)
 		results.append(cv_results)

@@ -1,5 +1,5 @@
 ## How to run the training process from GitHub Action
-To put the "Ops" part in "MLOps" the pipeline execution should be automated whenever possible. The scenario being used in this repository is when code is checked in, the training pipeline is automatically kicked off from a GitHub Action and if the newly trained model has a higher accuracy than the previous model, then it will be registered in the model repository. 
+To put the "Ops" in "MLOps" the pipeline execution should be automated whenever possible. The scenario being used in this repository is when code is checked in, the training pipeline is automatically kicked off from a GitHub Action and if the newly trained model has a higher accuracy than the previous model, then it will be registered in the model repository. 
 
 To review, [iris_supervised_model.py](/azureml/iris_supervised_model.py) does the training and [register_model.py](/azureml/register_model.py) obviously registers the model. The pipeline that runs these two steps is built and executed from [train_pipeline.py](/azureml/train_pipeline.py). So it is this train_pipeline.py (also referred to in this repository documentation as the driver script) that needs to be executed from a GitHub action.
 
@@ -74,4 +74,28 @@ These secrets are created in the repository from the "Settings" tab. In the "Sec
 ![GitHub New Secret](/docs/images/github_add_secret.PNG)
 
 It should be obvious that the secret names need to match the secrets given in the yaml action script: `${{secrets.AZUREML_CLIENTID}}`. 
+
+### Invoking the GitHub Action
+Any change to the source code based on this simple action definition will invoke the [train_pipeline.py](/azureml/train_pipeline.py) which defines and then submits the iris_train_pipeline with the snip of code below.
+
+```
+iris_train_pipeline = Pipeline(workspace=ws, steps=[trainingScript,registerModelStep])
+print ("Pipeline is built")
+
+exp = Experiment(ws,experiment_name)
+exp.set_tags({'automl':'no','working':'no'})
+
+pipeline_run1 = exp.submit(iris_train_pipeline)
+print("Pipeline is submitted for execution")
+
+pipeline_run1.wait_for_completion()
+```
+
+This will happen from master or a branch. To see the action in action, in iris_supervised_model.py change the n_splits from 5 to 3.
+
+![code change example](/docs/images/test_action_nsplits_image.PNG)
+
+Do a commit and push *(i'm using VSCode, yes it has incredible Python development support)*
+
+
 
