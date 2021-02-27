@@ -95,7 +95,7 @@ This will happen from master or a branch. To see the action in action, in iris_s
 
 ![code change example](/docs/images/test_action_nsplits_image.PNG)
 
-Do a commit and push *(i'm using VSCode, yes it has incredible Python development support)*
+Do a commit and push.
 
 On the Actions tab of the repo, a new action is now visible with a "yellow" icon to indicate "in progress"
 ![actions list](/docs/images/all_action_workflows_image.PNG)
@@ -110,6 +110,12 @@ Once the image is acquired, it kicks off the Azure ML Pipeline which can be revi
 ![action pipeline](/docs/images/action_kicks_off_pipeline_image.PNG)
 
 `pipeline_run1.wait_for_completion()` is an important line in train_pipeline.py that keeps the script from completing until the Azure ML pipeline completes. Without this line the action will finish while the pipeline is still running. This may be desired depending on the scenario.
+
+The logged pipeline outputs will be displayed in the run output.
+![action complete logs](/docs/images/action_run_detail_2_image.PNG)
+
+When it is complete, the status wil show green.
+![acton complete](/docs/images/action_run_complete_image.PNG)
 
 
 
