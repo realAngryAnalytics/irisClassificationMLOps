@@ -23,6 +23,7 @@ Files to review<br/>
 * [Passing datasets and files between steps](/docs/passing_files_between_steps.md)
 * [Using Run Context to manage the pipeline execution](/docs/run_context.md)
 * [Model Registration](/docs/model_registration.md)
+* [GitHub Action](/docs/github_action.md)
 
 **AzureML MLOps**<br/>
 https://github.com/microsoft/MLOpsPython
