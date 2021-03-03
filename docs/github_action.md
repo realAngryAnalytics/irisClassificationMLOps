@@ -114,8 +114,10 @@ Once the image is acquired, it kicks off the Azure ML Pipeline which can be revi
 The logged pipeline outputs will be displayed in the run output.
 ![action complete logs](/docs/images/action_run_detail_2_image.PNG)
 
-When it is complete, the status wil show green.
+When it is complete, the status will show green.  
 ![acton complete](/docs/images/action_run_complete_image.PNG)
 
+### Conclusion
+That is it. Now your training process is fully automated based on code check in.
 
 
