@@ -119,7 +119,6 @@ with open('./outputs/output.txt', 'w') as f:
 		f.write('\n')
 		print(msg)
 		print(".")
-		print(".")
 	
 	# +
 
